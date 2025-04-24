@@ -1,50 +1,82 @@
-'use client'
+'use client';
 
 import { useState } from "react";
 import { auth } from "../../firebase/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
-const page = () => {
-    const [email,setEmail]=useState("");
-    const [password,setPassword]=useState("");
-    const [error,setError]=useState("");
-    const handleSubmit=async(e)=>{
-        e.preventDefault();
-        try {
-            await createUserWithEmailAndPassword(auth,email,password);
-            alert("User created sucessfully")
-        } catch (error) {
-            setError(error);
-            alert("invalid argument");
-        }
-        
+const RegisterPage = () => {
+  const router = useRouter();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      alert("User created successfully");
+      router.push("/");
+    } catch (err) {
+      setError(err.message);
     }
+  };
+
   return (
-
-    <div className="flex justify-center mt-9 ">
-       <form onSubmit={handleSubmit} className="flex flex-col m-3 p-3 w-[500px] h-full p-5 border-red-300 border-1">
-        <label>Email</label>
-        <input 
-        type="email" 
-        className="w-[300px] border-2 border-black rounded-md p-1" 
-        value={email}
-        onChange={(e)=>setEmail(e.target.value)}
-        placeholder="PLace your email" 
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md"
+      >
+        <h2 className="text-2xl font-bold text-center mb-6 text-blue-600">
+          Create an Account
+        </h2>
+        <label className="block mb-2 text-sm font-medium text-gray-700">
+          Full Name
+        </label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full border border-gray-300 rounded-md p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="Enter your name"
         />
-        <br/>
-        <label>Password</label>
-        <input 
-        type="password" 
-        className="w-[300px] border-2 border-black rounded-md p-1" 
-        value={password}
-        onChange={(e)=>setPassword(e.target.value)}
-        placeholder="PLace your password"/>
-        <br/>
-        <button type="Submit" className="border-2 border-black rounded-md p-1 w-[100px]">Submit</button>
-       </form>
-       {error ? {error} : ""}
-    </div>
-  )
-}
+        <label className="block mb-2 text-sm font-medium text-gray-700">
+          Email
+        </label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full border border-gray-300 rounded-md p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="Enter your email"
+        />
 
-export default page
+        <label className="block mb-2 text-sm font-medium text-gray-700">
+          Password
+        </label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full border border-gray-300 rounded-md p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="Enter your password"
+        />
+
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+        >
+          Register
+        </button>
+
+        {error && (
+          <p className="mt-4 text-sm text-red-500 text-center">{error}</p>
+        )}
+      </form>
+    </div>
+  );
+};
+
+export default RegisterPage;
