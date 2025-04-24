@@ -14,7 +14,7 @@ const LoginPage = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert('Logged in successfully!');
-      router.push("/");
+      router.push('/');
     } catch (error) {
       console.log(error.message);
       alert('Login failed');
@@ -22,33 +22,35 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Login to your account</h2>
-        <form onSubmit={handleLogin} className="space-y-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-blue-200 px-4">
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Login</h2>
+        <form onSubmit={handleLogin} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <input
               type="email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-400"
-              placeholder="Enter your email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
               required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input
               type="password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-400"
-              placeholder="Enter your password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
               required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition duration-200"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition duration-200"
           >
             Login
           </button>
