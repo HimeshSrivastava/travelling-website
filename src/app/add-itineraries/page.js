@@ -1,9 +1,7 @@
 'use client'
-
 import { useState } from "react"
-import { db, storage } from "../../firebase/firebase" 
+import { db } from "../../firebase/firebase"
 import { collection, addDoc } from "firebase/firestore"
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import { useRouter } from "next/navigation"
 
 export default function AddItinerary() {
@@ -14,51 +12,36 @@ export default function AddItinerary() {
     endDate: '',
     activities: '',
     tripType: 'adventure',
-    imageUrl: ''
+    imageUrl: '' 
   })
-  const [image, setImage] = useState(null) 
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0]
-    if (file) {
-      setImage(file) 
-    }
+    setFormData({ ...formData, [e.target.name]: e.target.value }) 
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    if (!image) {
-      alert("Please select an image.");
-      return;
+    e.preventDefault()
+
+    if (!formData.imageUrl) {
+      alert("Please provide a valid image URL.")
+      return
     }
-  
+
     try {
-      const storageRef = ref(storage, `images/${image.name}`);
-      const snapshot = await uploadBytes(storageRef, image); // NO resumable
-  
-      const downloadURL = await getDownloadURL(snapshot.ref);
-  
       await addDoc(collection(db, "itineraries"), {
         ...formData,
-        imageUrl: downloadURL,
-      });
-  
-      alert("Itinerary added!");
-      router.push("/");
+      })
+
+      alert("Itinerary added!")
+      router.push("/")
     } catch (error) {
-      console.error("Error:", error);
-      alert("Something went wrong.");
+      console.error("Error:", error)
+      alert("Something went wrong.")
     }
-  };
-  
+  }
 
   return (
-    <div className="p-6 max-w-xl mx-auto bg-white rounded-xl shadow-lg">
+    <div className="p-6 max-w-xl mx-auto mt-3 bg-white rounded-xl shadow-lg">
       <h1 className="text-3xl font-semibold text-center mb-6 text-blue-600">Plan Your Travel Itinerary</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
@@ -125,12 +108,15 @@ export default function AddItinerary() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Upload Image</label>
+          <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image URL</label>
           <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
+            type="text"
+            name="imageUrl"
+            placeholder="Enter a valid image URL"
+            onChange={handleChange}
+            value={formData.imageUrl}
             className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required
           />
         </div>
 

@@ -78,7 +78,7 @@ const handleFavorite = async (id, currentStatus) => {
             <p><strong>Activities:</strong> {itinerary.activities}</p>
             <p><strong>Type:</strong> {itinerary.tripType}</p>
             {filterItineraries.imageUrl && (
-              <img src={itinerary.imageUrl} alt="Trip" className="mt-2 w-full h-48 object-cover rounded" />
+              <img src={`${itinerary.imageUrl}`} alt="Trip" className="mt-2 w-full h-48 object-cover rounded" />
             )}
             <button
             onClick={()=>user ? handleFavorite(itinerary.id, itinerary.isFavorite): alert("Login or Signup to use functionality")}
